@@ -1,47 +1,83 @@
-function computerPlay()
-{
-    let choice= ['rock', 'paper', 'scissors']
-    return choice[Math.floor(Math.random() * choice.length)]
-}
-      
+const game = () => {
+  let pScore = 0;
+  let cScore = 0;
 
-function getUserPlay()
-{
-    let choice= ['rock', 'paper', 'scissors']
-    choice= prompt("Type rock, paper, or scissors")
-    return choice;
-}
+  const playMatch = () => {
+    const options = document.querySelectorAll('.options button')
 
-function playRound()
-{
-    let computerSelection;
-    let playerSelection;
-    let playerScore=0;
-    let computerScore=0;
-    for(let i = 0; i < 5; i++)
-    {
-        playerSelection=getUserPlay();
-        console.log(playerSelection);
-        computerSelection = computerPlay();
-        console.log(computerSelection);
+    const computerOptions = ['rock','paper','scissors'];
 
-        if ((playerSelection == 'rock' && computerSelection == 'scissors') ||
-        (playerSelection == 'scissors' && computerSelection == 'paper') ||
-        (playerSelection == 'paper' && computerSelection == 'rock'))
-        {
-            alert("youwin");
-            playerScore++;
-        }
-        else if(playerSelection == computerSelection)
-        {
-            alert("youtie");
-        }
-        else
-          {
-            alert("youlose");
-            computerScore++;
-          }
-          console.log("playerscore: " ,playerScore);
-          console.log("computerScore: ", computerScore)
-        }
+    options.forEach(option =>{
+      option.addEventListener("click", function(){
+        //computer choice
+        const computerNumber = Math.floor(Math.random() * 3);
+        const computerChoice = computerOptions[computerNumber];
+        compareChoice(this.textContent, computerChoice);
+      });
+    });
+  };
+
+  const updateScore = () =>{
+    const playerScore = document.querySelector(".player-score p");
+    const computerScore = document.querySelector(".computer-score p");
+    playerScore.textContent = pScore;
+    computerScore.textContent = cScore;
+
+  }
+
+
+
+  const compareChoice = (playerChoice, computerChoice) => {
+    const winner = document.querySelector('.winner');
+    if(playerChoice === computerChoice) {
+      winner.textContent = 'You Tied!';
+      return;
+    }
+    if(playerChoice === 'rock') {
+      if(computerChoice === 'scissors') {
+        winner.textContent = 'Computer Chose Scissors, You Win!';
+        pScore++;
+        updateScore();
+        return
       }
+      else {
+        winner.textContent = 'Computer Chose Paper, You Lose!';
+        cScore++;
+        updateScore();
+        return;
+      }
+    }
+    if(playerChoice === 'paper') {
+      if(computerChoice === 'rock') {
+        winner.textContent = 'Computer Chose Rock, You Win!';
+        pScore++;
+        updateScore();
+        return
+      }
+      else {
+        winner.textContent = 'Computer Chose Scissors, You Lose!';
+        cScore++;
+        updateScore();
+        return;
+      }
+    }
+    if(playerChoice === 'scissors') {
+      if(computerChoice === 'paper') {
+        winner.textContent = 'Computer Chose paper, You Win!';
+        pScore++;
+        updateScore();
+        return
+      }
+      else {
+        winner.textContent = 'Computer Chose Rock, You Lose!';
+        cScore++;
+        updateScore();
+        return;
+      }
+    }
+  }
+
+
+  playMatch();
+}
+game();
